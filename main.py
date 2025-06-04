@@ -8,7 +8,7 @@ import time
 import asyncio
 import sys
 
-Dynamic uvloop import - only available on Unix systems
+
 try:
     if sys.platform != 'win32':
         import uvloop
