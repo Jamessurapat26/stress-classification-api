@@ -9,13 +9,13 @@ import asyncio
 import sys
 
 # Dynamic uvloop import - only available on Unix systems
-try:
-    if sys.platform != 'win32':
-        import uvloop
-    else:
-        uvloop = None
-except ImportError:
-    uvloop = None
+# try:
+#     if sys.platform != 'win32':
+#         import uvloop
+#     else:
+#         uvloop = None
+# except ImportError:
+#     uvloop = None
 
 from endpoint.predictEndpoint import router as predict_router
 from config.cors import add_cors_middleware
