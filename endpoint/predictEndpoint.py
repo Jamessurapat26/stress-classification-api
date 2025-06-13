@@ -28,16 +28,19 @@ async def predict_stress_lstm(data: InputData):
     """
     logger.info(f"Received prediction request for device {data.deviceId}")
     processor = Preprocessor(data.deviceId)
+    
+    model_input = await processor.prepare_lstm_input(num_timesteps=5, personal_data=data)
 
-    try:
-        model_input = await processor.prepare_lstm_input(num_timesteps=5, personal_data=data)
-    except ValueError as ve:
-        logger.warning(f"Data error for device {data.deviceId}: {ve}")
-        raise HTTPException(status_code=400, detail=str(ve))
-    except Exception as e:
-        logger.exception(f"Unexpected error for device {data.deviceId}: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
+    # try:
+    #     model_input = await processor.prepare_lstm_input(num_timesteps=5, personal_data=data)
+    # except ValueError as ve:
+    #     logger.warning(f"Data error for device {data.deviceId}: {ve}")
+    #     raise HTTPException(status_code=400, detail=str(ve))
+    # except Exception as e:
+    #     logger.exception(f"Unexpected error for device {data.deviceId}: {e}")
+    #     raise HTTPException(status_code=500, detail="Internal server error")
 
+    print(f"Model input shape: {model_input.shape}")
     logger.info(f"Model input shape: {model_input.shape}")
     
     model = Model()

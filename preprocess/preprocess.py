@@ -11,7 +11,9 @@ import pandas as pd
 class Preprocessor:
     """Preprocesses sensor data for LSTM model input."""
 
-    DEFAULT_FEATURE_KEYS = ['EDA_Phasic', 'SCR_Amplitude', 'EDA_Tonic', 'SCR_Onsets']
+    # DEFAULT_FEATURE_KEYS = ['EDA_Phasic', 'SCR_Amplitude', 'EDA_Tonic', 'SCR_Onsets']
+    DEFAULT_FEATURE_KEYS = ['HRV_SDNN', 'HRV_RMSSD', 'HRV_LF', 'HRV_HF', 'HRV_LFHF',
+                'EDA_Phasic', 'SCR_Amplitude', 'EDA_Tonic', 'SCR_Onsets']
     ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 
     _scaler = None
@@ -142,9 +144,10 @@ class Preprocessor:
         return df
 
     def _normalize_data(self, df: pd.DataFrame) -> np.ndarray:
-        if not self._scaler:
+        if self._scaler is None:
             logging.warning("Scaler not loaded. Skipping normalization.")
             return df.values
+        # ถ้า self._scaler ไม่ใช่ None ให้ทำการแปลงข้อมูล
         return self._scaler.transform(df)
 
     def _reshape_for_lstm(self, data: np.ndarray, timesteps: int, features: int) -> np.ndarray:
